@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mô Phỏng Hóa Học 3D</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sidebar UI -->
+    <div id="ui-container">
+        
+        <!-- Header -->
+        <div class="app-header">
+            <h1 id="header-title">CẤU TRÚC PHÂN TỬ 3D</h1>
+            <span id="header-sub">HÓA HỌC ABC</span>
+        </div>
+        
+        <div class="scroll-area">
+            <!-- Ngôn ngữ -->
+            <div class="control-row">
+                <select id="language-select" class="form-select">
+                    <option value="vi" selected>🇻🇳 Tiếng Việt</option>
+                    <option value="en">🇬🇧 English</option>
+                </select>
+            </div>
+
+            <!-- Chọn chất -->
+            <div class="control-row">
+                <select id="molecule-select" class="form-select large-select">
+                    <option value="" disabled selected>-- Chọn phân tử --</option>
+                    
+                    <optgroup id="opt-inorganic" label="Inorganic substances">
+                        <option value="H2">H₂ (Hydrogen)</option>
+                        <option value="N2">N₂ (Nitrogen)</option>
+                        <option value="O2">O₂ (Oxygen)</option>
+                        <option value="F2">F₂ (Fluorine)</option>
+                        <option value="Cl2">Cl₂ (Chlorine)</option>
+                        <option value="CO2">CO₂ (Carbon dioxide)</option>
+                        <option value="SO2">SO₂ (Sulfur dioxide)</option>
+                        <option value="HCl">HCl (Hydrogen chloride)</option>
+                        <option value="H2O">H₂O (Water)</option>
+                        <option value="H2S">H₂S (Hydrogen sulfide)</option>
+                        <option value="NH3">NH₃ (Ammonia)</option>
+                        <option value="H2SO4">H₂SO₄ (Sulfuric acid)</option>
+                        <option value="HNO3">HNO₃ (Nitric acid)</option>
+                        <option value="H3PO4">H₃PO₄ (Phosphoric acid)</option>
+                    </optgroup>
+
+                    <optgroup id="opt-hydrocarbons" label="Hydrocarbons">
+                        <option value="CH4">CH₄ (Methane)</option>
+                        <option value="C2H6">C₂H₆ (Ethane)</option>
+                        <option value="C3H8">C₃H₈ (Propane)</option>
+                        <option value="nC4H10">n-C₄H₁₀ (Butane)</option>
+                        <option value="isoC4H10">iso-C₄H₁₀ (2-Methylpropane)</option>
+                        <option value="C2H4">C₂H₄ (Ethene)</option>
+                        <option value="C2H2">C₂H₂ (Ethyne)</option>
+                        <option value="C3H6_open">C₃H₆ (Propene)</option>
+                        <option value="C3H6_ring">C₃H₆ (Cyclopropane)</option>
+                        <option value="cis_but_2_ene">C₄H₈ (cis-But-2-ene)</option>
+                        <option value="trans_but_2_ene">C₄H₈ (trans-But-2-ene)</option>
+                        <option value="but_1_3_diene">C₄H₆ (Buta-1,3-diene)</option>
+                        <option value="isoprene">C₅H₈ (2-Methylbuta-1,3-diene)</option>
+                        <option value="C6H6">C₆H₆ (Benzene)</option>
+                        <option value="C6H5CH3">C₇H₈ (Methylbenzene)</option>
+                        <option value="styrene">C₈H₈ (Ethenylbenzene)</option>
+                    </optgroup>
+
+                    <optgroup id="opt-halogen" label="Halogen derivatives">
+                        <option value="CH3Cl">CH₃Cl (Chloromethane)</option>
+                        <option value="C2H5Cl">C₂H₅Cl (Chloroethane)</option>
+                    </optgroup>
+
+                    <optgroup id="opt-alcohols" label="Alcohols & Phenols">
+                        <option value="CH3OH">CH₃OH (Methanol)</option>
+                        <option value="C2H5OH">C₂H₅OH (Ethanol)</option>
+                        <option value="C3H5(OH)3">C₃H₈O₃ (Propane-1,2,3-triol)</option>
+                        <option value="C6H5OH">C₆H₅OH (Phenol)</option>
+                    </optgroup>
+
+                    <optgroup id="opt-aldehydes" label="Aldehydes & Ketones">
+                        <option value="HCHO">HCHO (Methanal)</option>
+                        <option value="CH3CHO">CH₃CHO (Ethanal)</option>
+                        <option value="CH3COCH3">C₃H₆O (Propan-2-one)</option>
+                    </optgroup>
+
+                    <optgroup id="opt-acids" label="Carboxylic acids">
+                        <option value="HCOOH">HCOOH (Methanoic acid)</option>
+                        <option value="CH3COOH">CH₃COOH (Ethanoic acid)</option>
+                        <option value="CH2=CHCOOH">C₂H₃COOH (Propenoic acid)</option>
+                        <option value="lactic_acid">C₃H₆O₃ (Lactic acid)</option>
+                        <option value="benzoic_acid">C₆H₅COOH (Benzoic acid)</option>
+                        <option value="oxalic_acid">H₂C₂O₄ (Oxalic acid)</option>
+                        <option value="malonic_acid">C₃H₄O₄ (Malonic acid)</option>
+                        <option value="succinic_acid">C₄H₆O₄ (Succinic acid)</option>
+                        <option value="citric_acid">C₆H₈O₇ (Citric acid)</option>
+                    </optgroup>
+
+                    <optgroup id="opt-esters" label="Esters">
+                        <option value="HCOOCH3">HCOOCH₃ (Methyl methanoate)</option>
+                        <option value="CH3COOCH3">CH₃COOCH₃ (Methyl ethanoate)</option>
+                        <option value="CH3COOC2H5">CH₃COOC₂H₅ (Ethyl ethanoate)</option>
+                        <option value="isoamyl_acetate">CH₃COOC₅H₁₁ (Isoamyl acetate)</option>
+                    </optgroup>
+
+                    <optgroup id="opt-amines" label="Amines">
+                        <option value="CH3NH2">CH₃NH₂ (Methanamine)</option>
+                        <option value="C2H5NH2">C₂H₅NH₂ (Ethanamine)</option>
+                        <option value="CH3NHCH3">C₂H₇N (N-Methylmethanamine)</option>
+                        <option value="(CH3)3N">C₃H₉N (N,N-Dimethylmethanamine)</option>
+                        <option value="C6H5NH2">C₆H₅NH₂ (Benzenamine)</option>
+                    </optgroup>
+
+                    <optgroup id="opt-carbs" label="Carbohydrates">
+                        <option value="alpha_glucose">C₆H₁₂O₆ (α-D-Glucopyranose)</option>
+                        <option value="beta_glucose">C₆H₁₂O₆ (β-D-Glucopyranose)</option>
+                        <option value="alpha_fructose">C₆H₁₂O₆ (α-D-Fructofuranose)</option>
+                        <option value="beta_fructose">C₆H₁₂O₆ (β-D-Fructofuranose)</option>
+                    </optgroup>
+
+                    <optgroup id="opt-amino-acids" label="Amino Acids">
+                        <option value="Gly">Gly (Glycine)</option>
+                        <option value="Ala">Ala (Alanine)</option>
+                        <option value="Val">Val (Valine)</option>
+                        <option value="Lys">Lys (Lysine)</option>
+                        <option value="Glu">Glu (Glutamic acid)</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <!-- Nút điều khiển -->
+            <div class="button-grid">
+                <button id="toggle-rotate" class="btn-toggle active">Xoay Tự Động</button>
+                <button id="toggle-labels" class="btn-toggle active">Nhãn Nguyên Tố</button>
+            </div>
+
+            <!-- Khu vực Công cụ ảnh -->
+            <div class="image-tools-box">
+                <div class="control-row">
+                    <select id="snap-res" class="form-select">
+                        <option value="current" selected>Màn hình hiện tại</option>
+                        <option value="1280x720">HD 720p</option>
+                        <option value="1920x1080">Full HD 1080p</option>
+                        <option value="3840x2160">4K UHD</option>
+                    </select>
+                </div>
+                <div class="control-row">
+                    <select id="snap-format" class="form-select">
+                        <option value="png" selected>PNG</option>
+                        <option value="jpg">JPG</option>
+                    </select>
+                </div>
+                <div class="control-row">
+                    <button id="btn-save-image" class="btn-primary">Lưu Ảnh</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Instructions -->
+        <div class="instructions" id="instructions-panel">
+            <div class="ins-row">
+                <kbd id="key-left">Chuột trái</kbd> <span id="ins-left-text">Xoay góc nhìn</span>
+            </div>
+            <div class="ins-row">
+                <kbd id="key-wheel">Con lăn</kbd> <span id="ins-wheel-text">Thu / Phóng</span>
+            </div>
+            <div class="ins-row">
+                <kbd id="key-right">Chuột phải</kbd> <span id="ins-right-text">Di chuyển</span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="canvas-container"></div>
+    <script src="sketch.js"></script>
+</body>
+</html>
