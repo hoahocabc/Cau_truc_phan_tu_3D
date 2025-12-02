@@ -2,20 +2,26 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mô Phỏng Hóa Học 3D</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Nút mở Menu trên Mobile -->
+    <button id="mobile-menu-btn">☰</button>
+
+    <!-- Lớp phủ mờ để click đóng menu (Overlay) -->
+    <div id="menu-overlay"></div>
+
     <!-- Sidebar UI -->
     <div id="ui-container">
-        
-        <!-- Header -->
         <div class="app-header">
             <h1 id="header-title">CẤU TRÚC PHÂN TỬ 3D</h1>
             <span id="header-sub">HÓA HỌC ABC</span>
+            <!-- Nút đóng menu (X) -->
+            <button id="close-menu-btn">✕</button>
         </div>
         
         <div class="scroll-area">
@@ -136,8 +142,8 @@
                 <button id="toggle-labels" class="btn-toggle active">Nhãn Nguyên Tố</button>
             </div>
 
-            <!-- Khu vực Công cụ ảnh -->
-            <div class="image-tools-box">
+            <!-- Khu vực Công cụ ảnh (Chỉ hiện trên Desktop) -->
+            <div class="image-tools-box desktop-only">
                 <div class="control-row">
                     <select id="snap-res" class="form-select">
                         <option value="current" selected>Màn hình hiện tại</option>
@@ -169,9 +175,42 @@
             <div class="ins-row">
                 <kbd id="key-right">Chuột phải</kbd> <span id="ins-right-text">Di chuyển</span>
             </div>
+            <!-- Mobile only instructions -->
+            <div class="ins-row mobile-only">
+                <kbd>1 ngón</kbd> <span>Xoay</span> | <kbd>2 ngón</kbd> <span>Zoom/Di chuyển</span>
+            </div>
         </div>
     </div>
     
+    <!-- Nút chụp nhanh trên mobile -->
+    <button id="quick-snap-btn" class="mobile-only">📸</button>
+
+    <!-- POPUP LƯU ẢNH CHO MOBILE -->
+    <div id="save-popup-overlay" class="hidden">
+        <div class="save-popup">
+            <h3>Lưu Ảnh</h3>
+            <div class="control-row">
+                <label>Kích thước:</label>
+                <select id="mobile-snap-res" class="form-select">
+                    <option value="current" selected>Màn hình hiện tại</option>
+                    <option value="1280x720">HD 720p</option>
+                    <option value="1920x1080">Full HD 1080p</option>
+                </select>
+            </div>
+            <div class="control-row">
+                <label>Định dạng:</label>
+                <select id="mobile-snap-format" class="form-select">
+                    <option value="png" selected>PNG (Trong suốt)</option>
+                    <option value="jpg">JPG (Nền đen)</option>
+                </select>
+            </div>
+            <div class="popup-actions">
+                <button id="mobile-cancel-btn" class="btn-toggle">Hủy</button>
+                <button id="mobile-save-btn" class="btn-primary">Tải Về</button>
+            </div>
+        </div>
+    </div>
+
     <div id="canvas-container"></div>
     <script src="sketch.js"></script>
 </body>
